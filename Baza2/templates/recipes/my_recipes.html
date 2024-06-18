@@ -1,0 +1,20 @@
+{% extends 'recipes/base.html' %}
+
+{% block title %}Moje Przepisy{% endblock %}
+
+{% block content %}
+<h2>Moje Przepisy</h2>
+
+{% if recipes %}
+    <ul>
+        {% for recipe in recipes %}
+            <li>
+                <a href="{% url 'recipe_detail' recipe.pk %}">{{ recipe.title }}</a>
+                <p>{{ recipe.description }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Nie dodałeś/aś jeszcze żadnych przepisów.</p>
+{% endif %}
+{% endblock %}

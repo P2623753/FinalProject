@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Recipe App{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'recipes/css/styles.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'recipes/favicon.ico' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Wszystkie Przepisy</a></li>
+                <li><a href="{% url 'my_recipes' %}">Twoje Przepisy</a></li>
+                <li><a href="{% url 'add_recipe' %}">Dodaj Przepis</a></li>
+                <li><a href="{% url 'search' %}">Wyszukiwarka Przepisów</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'profile' %}">Profil</a></li>
+                    <li>
+                        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="background:none; border:none; color:blue; cursor:pointer; padding:0; margin:0; text-decoration:underline;">Wyloguj</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Logowanie</a></li>
+                    <li><a href="{% url 'register' %}">Rejestracja</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2024 Recipe App</p>
+    </footer>
+</body>
+</html>
+
