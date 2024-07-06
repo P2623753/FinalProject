@@ -1,0 +1,33 @@
+{% extends 'recipes/base.html' %}
+
+{% block title %}{{ recipe.title }}{% endblock %}
+
+{% block content %}
+<h2>{{ recipe.title }}</h2>
+<h3>Instrukcje</h3>
+<p>{{ recipe.instructions }}</p>
+
+<h3>Składniki</h3>
+<ul>
+    {% for ingredient in recipe.ingredients.all %}
+        <li>{{ ingredient.title }}</li>
+    {% endfor %}
+</ul>
+
+<h3>Komentarze</h3>
+{% if user.is_authenticated %}
+    <form method="post">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <button type="submit">Dodaj komentarz</button>
+    </form>
+{% else %}
+    <p>Musisz się <a href="{% url 'login' %}">zalogować</a> żeby dodać komentarz</p>
+{% endif %}
+
+<ul>
+    {% for comment in comments %}
+        <li><strong>{{ comment.user.username }}</strong>: {{ comment.text }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

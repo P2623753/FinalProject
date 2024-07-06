@@ -1,0 +1,42 @@
+{% extends 'recipes/base.html' %}
+
+{% block title %}Wszystkie Przepisy{% endblock %}
+
+{% block content %}
+{% for recipe in recipes %}
+    <div>
+        <h2>{{ recipe.title }}</h2>
+        <p>{{ recipe.instructions }}</p>
+        <p><strong>Czas przygotowania:</strong> {{ recipe.time1 }}</p>
+        <p><strong>Czas pieczenia/gotowania/smażenia:</strong> {{ recipe.time2 }}</p>
+        <p><strong>Składniki:</strong> {{ recipe.ingredients }}</p>
+        <p><strong>Liczba porcji:</strong> {{ recipe.number }}</p>
+        <p><strong>Autor:</strong> {{ recipe.author.name }}</p>
+        <p><strong>Tagi:</strong> 
+            {% for tag in recipe.tags.all %}
+                {{ tag.name }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+        
+
+        <h3>Komentarze</h3>
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'add_comment' recipe.pk %}">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                <button type="submit">Dodaj komentarz</button>
+            </form>
+        {% else %}
+            <p>Musisz się <a href="{% url 'login' %}">zalogować</a> żeby dodać komentarz</p>
+        {% endif %}
+        
+        <ul>
+            {% for comment in recipe.comments.all %}
+                <li><strong>{{ comment.user.username }}</strong>: {{ comment.text }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endfor %}
+{% endblock %}
+
+

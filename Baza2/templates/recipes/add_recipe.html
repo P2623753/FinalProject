@@ -1,0 +1,13 @@
+{% extends 'recipes/base.html' %}
+
+{% block title %}Dodaj Przepis{% endblock %}
+
+{% block content %}
+  <h2>Dodaj nowy przepis</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Dodaj przepis</button>
+  </form>
+{% endblock %}
+

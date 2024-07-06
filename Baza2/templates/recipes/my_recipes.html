@@ -1,0 +1,35 @@
+{% extends 'recipes/base.html' %}
+
+{% block title %}Moje Przepisy{% endblock %}
+
+{% block content %}
+<h2>Moje Przepisy</h2>
+
+{% if recipes %}
+    <ul>
+        {% for recipe in recipes %}
+            <li>
+                <a href="{% url 'recipe_detail' recipe.pk %}">{{ recipe.title }}</a>
+                <p>{{ recipe.instructions }}</p>
+                <p><strong>Czas przygotowania:</strong> {{ recipe.time1 }}</p>
+                <p><strong>Czas pieczenia/gotowania/smażenia:</strong> {{ recipe.time2 }}</p>
+                <p><strong>Składniki:</strong> {{ recipe.ingredients }}</p>
+                <p><strong>Liczba porcji:</strong> {{ recipe.number }}</p>
+                <p><strong>Autor:</strong> {{ recipe.author.name }}</p>
+                <p><strong>Tagi:</strong> 
+                    {% for tag in recipe.tags.all %}
+                        {{ tag.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+
+                {% if user == recipe.author.user %}
+                    <a href="{% url 'recipe_edit' recipe.pk %}">Edytuj</a>
+                    <a href="{% url 'recipe_delete' recipe.pk %}">Usuń</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Nie dodałeś/aś jeszcze żadnych przepisów.</p>
+{% endif %}
+{% endblock %}

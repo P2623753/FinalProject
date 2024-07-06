@@ -1,0 +1,41 @@
+{% extends 'recipes/base.html' %}
+
+{% block title %}Wyszukiwarka Przepisów{% endblock %}
+
+{% block content %}
+<h2>Wyszukiwarka Przepisów</h2>
+
+<form action="{% url 'search' %}" method="get">
+    <label>
+        <input type="text" name="q" placeholder="Szukaj przepisów...">
+    </label>
+    <button type="submit">Szukaj</button>
+</form>
+
+<h3>Wyniki wyszukiwania{% if query %} dla: "{{ query }}"{% endif %}</h3>
+
+{% if results %}
+    <ul>
+        {% for recipe in results %}
+            <li>
+                <a href="{% url 'recipe_detail' recipe.pk %}">{{ recipe.title }}</a>
+                <p>{{ recipe.instructions|truncatewords:20 }}</p>
+                <p><strong>Czas przygotowania:</strong> {{ recipe.time1 }}</p>
+                <p><strong>Czas pieczenia/gotowania/smażenia:</strong> {{ recipe.time2 }}</p>
+                <p><strong>Składniki:</strong> {{ recipe.ingredients }}</p>
+                <p><strong>Liczba porcji:</strong> {{ recipe.number }}</p>
+                <p><strong>Autor:</strong> {{ recipe.author.name }}</p>
+                <p><strong>Tagi:</strong> 
+                    {% for tag in recipe.tags.all %}
+                        {{ tag.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    {% if query %}
+        <p>Brak wyników wyszukiwania.</p>
+    {% endif %}
+{% endif %}
+{% endblock %}
