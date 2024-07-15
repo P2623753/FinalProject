@@ -1,0 +1,21 @@
+{% extends "recipes/base.html" %}
+
+{% block title %} Dodaj Składniki{% endblock %}
+
+{% block content %}
+<h1>Dodaj Składniki</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Dodaj Składnik</button>
+</form>
+
+<h2>Składniki</h2>
+<ul>
+    {% for ingredient in ingredients %}
+        <li>{{ ingredient.name }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
+

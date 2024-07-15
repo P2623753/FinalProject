@@ -1,0 +1,12 @@
+{% extends 'recipes/base.html' %}
+
+{% block title %}Usuń przepis{% endblock %}
+
+{% block content %}
+<h2>Czy na pewno chcesz usunąć przepis "{{ recipe.title }}"?</h2>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Tak, usuń</button>
+    <a href="{% url 'recipe_detail' recipe.pk %}">Anuluj</a>
+</form>
+{% endblock %}

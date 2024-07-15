@@ -1,0 +1,82 @@
+{% extends "recipes/base.html" %}
+
+{% block content %}
+<h1>Dodaj Przepis</h1>
+<form method="post" id="recipeForm">
+    {% csrf_token %}
+    {{ form.as_p }}
+    
+
+    <h2>Dodaj składniki</h2>
+    <div id="ingredientsList">
+        
+    </div>
+
+    <label for="id_ingredient">Składnik:</label>
+    <select name="ingredient" id="id_ingredient">
+        {% for ingredient in ingredient_form.fields.ingredient.queryset %}
+            <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
+        {% endfor %}
+    </select>
+    
+    <label for="id_amount">Ilość:</label>
+    <input type="number" name="amount" id="id_amount" value="1">
+    
+    <label for="id_unit">Jednostka miary:</label>
+    <select name="unit" id="id_unit">
+        {% for unit_value, unit_label in ingredient_form.fields.unit.choices %}
+            <option value="{{ unit_value }}">{{ unit_label }}</option>
+        {% endfor %}
+    </select>
+    
+    <button type="button" id="addIngredientButton">Zatwierdź składnik</button>
+    
+    <ul id="addedIngredients">
+        
+    </ul>
+    
+    <button type="submit">Dodaj Przepis</button>
+</form>
+
+<script>
+document.getElementById('addIngredientButton').addEventListener('click', function() {
+    const ingredientSelect = document.getElementById('id_ingredient');
+    const amountInput = document.getElementById('id_amount');
+    const unitSelect = document.getElementById('id_unit');
+
+    const ingredient = ingredientSelect.options[ingredientSelect.selectedIndex].text;
+    const amount = amountInput.value;
+    const unit = unitSelect.options[unitSelect.selectedIndex].text;
+
+    const listItem = document.createElement('li');
+    listItem.textContent = `${ingredient} - ${amount} ${unit}`;
+
+    document.getElementById('addedIngredients').appendChild(listItem);
+
+    
+    const ingredientHidden = document.createElement('input');
+    ingredientHidden.type = 'hidden';
+    ingredientHidden.name = 'ingredient';
+    ingredientHidden.value = ingredientSelect.value;
+
+    const amountHidden = document.createElement('input');
+    amountHidden.type = 'hidden';
+    amountHidden.name = 'amount';
+    amountHidden.value = amount;
+
+    const unitHidden = document.createElement('input');
+    unitHidden.type = 'hidden';
+    unitHidden.name = 'unit';
+    unitHidden.value = unitSelect.value;
+
+    document.getElementById('recipeForm').appendChild(ingredientHidden);
+    document.getElementById('recipeForm').appendChild(amountHidden);
+    document.getElementById('recipeForm').appendChild(unitHidden);
+
+    
+    ingredientSelect.selectedIndex = 0;
+    amountInput.value = 1;
+    unitSelect.selectedIndex = 0;
+});
+</script>
+{% endblock %}

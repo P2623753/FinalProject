@@ -1,0 +1,38 @@
+{% extends 'recipes/base.html' %}
+
+{% block title %}{{ recipe.title }}{% endblock %}
+
+{% block content %}
+
+    <li>
+        <strong>{{ recipe.title }}</strong><br>
+        Instrukcje: {{ recipe.instructions }}<br>
+        Czas przygotowania: {{ recipe.preparation_time }}<br>
+        Czas pieczenia/gotowania/smażenia: {{ recipe.cooking_time }}<br>
+        Liczba porcji: {{ recipe.number }}<br>
+        Autor: {{ recipe.author.username }}
+    <p>Składniki:</p>
+            <ul>
+                {% for ingredient in recipe.ingredientinrecipe_set.all %}
+                    <li>{{ ingredient.ingredient.name }} - {{ ingredient.amount }} {{ ingredient.get_unit_display }}</li>
+                {% endfor %}
+            </ul>
+    </li>
+
+<h3>Komentarze</h3>
+{% if user.is_authenticated %}
+    <form method="post">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <button type="submit">Dodaj komentarz</button>
+    </form>
+{% else %}
+    <p>Musisz się <a href="{% url 'login' %}">zalogować</a> żeby dodać komentarz</p>
+{% endif %}
+
+<ul>
+    {% for comment in comments %}
+        <li><strong>{{ comment.user.username }}</strong>: {{ comment.text }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

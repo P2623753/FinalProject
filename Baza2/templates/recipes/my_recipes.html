@@ -1,0 +1,35 @@
+{% extends 'recipes/base.html' %}
+
+{% block title %}Moje Przepisy{% endblock %}
+
+{% block content %}
+<h2>Moje Przepisy</h2>
+
+<ul>
+    {% for recipe in recipes %}
+    <li>
+        <strong>{{ recipe.title }}</strong><br>
+        Instrukcje: {{ recipe.instructions }}<br>
+        Czas przygotowania: {{ recipe.preparation_time }}<br>
+        Czas pieczenia/gotowania/smażenia: {{ recipe.cooking_time }}<br>
+        Liczba porcji: {{ recipe.number }}<br>
+        Autor: {{ recipe.author.username }}
+    <p>Składniki:</p>
+            <ul>
+                {% for ingredient in recipe.ingredientinrecipe_set.all %}
+                    <li>{{ ingredient.ingredient.name }} - {{ ingredient.amount }} {{ ingredient.get_unit_display }}</li>
+                {% endfor %}
+            </ul>
+    </li>
+        
+                {% if user == recipe.author %}
+                    <a href="{% url 'recipe_edit' recipe.pk %}">Edytuj</a>
+                    <a href="{% url 'recipe_delete' recipe.pk %}">Usuń</a>
+                {% endif %}
+            
+        {% endfor %}
+    </ul>
+    
+
+{% endblock %}
+
