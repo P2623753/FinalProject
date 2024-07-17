@@ -25,7 +25,7 @@ class Unit(models.Model):
 
 
 class Recipe(models.Model):
-    """Klasa reprezentująca przepis kulinarny z nazwą, instrukcją, czasami przygotowania i pieczenia, składnikami, liczbą porcji, autorem oraz słowami kluczowymi."""
+    """Klasa reprezentująca przepis kulinarny z nazwą, instrukcją, czasami przygotowania i pieczenia, składnikami, liczbą porcji oraz autorem."""
     title = models.CharField(max_length=100, verbose_name='Nazwa przepisu')
     instructions = models.TextField(verbose_name='Instrukcje')
     preparation_time = models.CharField(max_length=100, verbose_name='Czas przygotowania')
